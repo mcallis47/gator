@@ -28,20 +28,18 @@ func Read() Config {
 	return config
 }
 
-func (config *Config) SetUser(name string) {
+func (config *Config) SetUser(name string) error {
 	config.CurrentUserName = name
 	file_path := filepath.Clean(getHomeDir() + "/.gatorconfig.json")
 	file, err := os.Create(file_path)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	defer file.Close()
 
 	encoder := json.NewEncoder(file)
 	err = encoder.Encode(config)
-	if err != nil {
-		panic(err)
-	}
+	return err
 }
 
 func getHomeDir() string {
